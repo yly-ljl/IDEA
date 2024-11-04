@@ -8,7 +8,7 @@ public class ChessboardWorldSystem {
         board = new CellBlock[length][width];
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
-                board[i][j] = new CellBlock(0, false); // 初始化每个 CellBlock为年龄为1的死亡细胞
+                board[i][j] = new CellBlock(0, false); // 初始化每个 CellBlock为年龄为0的死亡细胞
             }
         }
         this.second = 0;
