@@ -97,7 +97,7 @@ public class DanDelifeon3 {
             if (cnt > 1){
                 IsGameOver = true;
                 this.accumulatedMana += computeAccumulatedMana();
-                //label用来判定启命英集合中的所有启命英是否都经过了该判定。防止先判定的启命英造成了replaceAllCells而使之后启命英的判定无效
+                //label用来检查启命英集合中的所有启命英是否都经过了该判定。防止先判定的启命英造成了replaceAllCells而使之后启命英的判定无效
                 if (label == chessboard.getDanDelifeonsSize() - 1){
                     replaceAllCells();
                 }
