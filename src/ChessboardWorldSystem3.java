@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.Random;
 public class ChessboardWorldSystem3 {
-    private Object[][] board;
+    private final Object[][] board;
     private Object[][] CopyBoard;
     private final int length;
     private final int width;
     private int second;
-    private ArrayList<DanDelifeon3> DanDelifeons;
+    private final ArrayList<DanDelifeon3> DanDelifeons;
 
     public ChessboardWorldSystem3(int length, int width) {
         this.length = length;
@@ -15,7 +15,7 @@ public class ChessboardWorldSystem3 {
         //设置一个复制棋盘，帮助达到每次判定所有启命英同时进行的效果
         CopyBoard = new Object[this.length][this.width];
         this.second = 0;
-        DanDelifeons = new ArrayList();
+        DanDelifeons = new ArrayList<>();
     }
 
     public int getSecond() {
@@ -26,8 +26,8 @@ public class ChessboardWorldSystem3 {
         this.second = second;
     }
 
-    public void setCellBlock(int x, int y){
-        board[x][y] = new CellBlock3(0);//放置一个年龄为0的存活细胞
+    public void setCellBlock(int x, int y, int age, Object[][] board) {
+        board[x][y] = new CellBlock3(age);//放置一个年龄为0的存活细胞
     }
 
     public void setDandelifeon(int x, int y, ChessboardWorldSystem3 chessboard) {
@@ -43,10 +43,6 @@ public class ChessboardWorldSystem3 {
     //得到棋盘中的某一格
     public Object getLattice(int x, int y, Object[][] board){
         return board[x][y];
-    }
-
-    public void setLattice(Object board1, int x, int y, Object[][] board) {
-        board[x][y] = board1;
     }
 
     //得到DanDelifeons集合中的元素个数
@@ -101,9 +97,10 @@ public class ChessboardWorldSystem3 {
     //判断启命英的工作范围是否会超出边界
     public void ifDanDelifeonsOutOfBounds(){
         boolean flag = false;
-        for (int i = 0; i < DanDelifeons.size(); i++) {
-            if (DanDelifeons.get(i).getDan_x() + 12 > length || DanDelifeons.get(i).getDan_y() + 12 > width || DanDelifeons.get(i).getDan_x() - 12 < 0 || DanDelifeons.get(i).getDan_y() - 12 < 0) {
+        for (DanDelifeon3 danDelifeon : DanDelifeons) {
+            if (danDelifeon.getDan_x() + 12 > length || danDelifeon.getDan_y() + 12 > width || danDelifeon.getDan_x() - 12 < 0 || danDelifeon.getDan_y() - 12 < 0) {
                 flag = true;
+                break;
             }
         }
         if (flag) {
@@ -114,9 +111,10 @@ public class ChessboardWorldSystem3 {
     //判断随机添加细胞时是否将细胞添加到启命英的位置
     public boolean ifCellAndDanDelifeonsOverlaps(int x, int y){
         boolean flag = false;
-        for (int i = 0; i < DanDelifeons.size(); i++) {
-            if (x == DanDelifeons.get(i).getDan_x() && y == DanDelifeons.get(i).getDan_y()) {
+        for (DanDelifeon3 danDelifeon : DanDelifeons) {
+            if (x == danDelifeon.getDan_x() && y == danDelifeon.getDan_y()) {
                 flag = true;
+                break;
             }
         }
         return flag;
@@ -136,25 +134,22 @@ public class ChessboardWorldSystem3 {
             int cnt = cnt_label;
             boolean IsGameOver = false;
             //将DanDelifeon集合中的所有元素循环进行判定
-            for (int i = 0; i < DanDelifeons.size(); i++) {
-                DanDelifeon3 danDelifeon = DanDelifeons.get(i);
+            for (DanDelifeon3 danDelifeon : DanDelifeons) {
                 danDelifeon.lifeGameCheck1(danDelifeon.getDan_x(), danDelifeon.getDan_y());
             }
             this.second++;
             //将原棋盘复制给复制棋盘，开始下一轮的判定
             copy();
-            for (int i = 0; i < DanDelifeons.size(); i++) {
-                DanDelifeon3 danDelifeon = DanDelifeons.get(i);
+            for (DanDelifeon3 danDelifeon : DanDelifeons) {
                 danDelifeon.lifeGameCheck2(danDelifeon.getDan_x(), danDelifeon.getDan_y());
             }
             this.second++;
             copy();
-            for (int i = 0; i < DanDelifeons.size(); i++) {
-                DanDelifeon3 danDelifeon = DanDelifeons.get(i);
+            for (DanDelifeon3 danDelifeon : DanDelifeons) {
                 danDelifeon.lifeGameCheck3(danDelifeon.getDan_x(), danDelifeon.getDan_y());
             }
             this.second++;
-
+            copy();
             int label = 0;
             for (int i = 0; i < DanDelifeons.size(); i++, label++) {
                 DanDelifeon3 danDelifeon = DanDelifeons.get(i);
@@ -181,8 +176,8 @@ public class ChessboardWorldSystem3 {
             }
 
         }
-        for (int i = 0; i < DanDelifeons.size(); i++) {
-            SumOfMana += DanDelifeons.get(i).getAccumulatedMana();
+        for (DanDelifeon3 danDelifeon : DanDelifeons) {
+            SumOfMana += danDelifeon.getAccumulatedMana();
         }
         System.out.println("总产魔量:" + SumOfMana);
         System.out.println("总用时:" + this.second);
@@ -191,9 +186,7 @@ public class ChessboardWorldSystem3 {
     //将原棋盘复制给复制棋盘
     private void copy(){
         for (int i = 0; i < this.length; i++) {
-            for (int j = 0; j < this.width; j++) {
-                this.CopyBoard[i][j] = this.board[i][j];
-            }
+            if (this.width >= 0) System.arraycopy(this.board[i], 0, this.CopyBoard[i], 0, this.width);
         }
     }
 
@@ -209,7 +202,7 @@ public class ChessboardWorldSystem3 {
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.width; j++) {
                 if (!ifCellAndDanDelifeonsOverlaps(i, j) && rand.nextBoolean()) {
-                    this.setCellBlock(i,j);
+                    this.setCellBlock(i,j, 0, getBoard());
                 }
             }
         }

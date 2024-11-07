@@ -1,9 +1,7 @@
 import java.util.Scanner;
-import java.util.Random;
 public class Test3 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Random rand = new Random();
         System.out.println("请输入棋盘的大小:");
         System.out.print("length:");
         int length = sc.nextInt();
@@ -39,7 +37,6 @@ public class Test3 {
             System.out.println("异常信息:" + e.getMessage());
             return;
         }
-
 
         System.out.println("请输入要进行的游戏次数:");
         int GamesNums = sc.nextInt();

@@ -69,9 +69,9 @@ public class DanDelifeon3 {
                 if (flag) {
                     int count = countAliveNeighbors(Dan_x + dx,Dan_y + dy);
                     if (count == 3){
-                        CellBlock3 cell = new CellBlock3(getMaxAgeOfNeighbors(Dan_x + dx,Dan_y + dy));
+//                        CellBlock3 cell = new CellBlock3(getMaxAgeOfNeighbors(Dan_x + dx,Dan_y + dy));
                         //将要重生的位置由原来的Object变为CellBlock3，年龄取周围存活细胞年龄的最大值
-                        chessboard.setLattice(cell, Dan_x + dx, Dan_y + dy, chessboard.getCopyBoard());//细胞繁殖
+                        chessboard.setCellBlock(Dan_x + dx, Dan_y + dy,getMaxAgeOfNeighbors(Dan_x+dx, Dan_y+dy),chessboard.getCopyBoard());//细胞繁殖
                         chessboard.changeOneCellBlock(Dan_x + dx,Dan_y + dy);
                     }
                 }
@@ -109,10 +109,7 @@ public class DanDelifeon3 {
     private boolean isCellBlock3(int x, int y, int dx, int dy) {
         //检查该格是否是CellBlock,以及检查是否越界
         //此处判定同时给lifeGameCheck方法和private方法调用，故条件较多。
-        if ((x + dx < 0) || (y + dy < 0) || (x + dx >= chessboard.getLength()) || (y + dy >= chessboard.getWidth()) || !(chessboard.getLattice(x + dx,y + dy, chessboard.getCopyBoard()) instanceof CellBlock3) || (dx == 0 && dy == 0)) {
-            return false;
-        }
-        return true;
+        return (x + dx >= 0) && (y + dy >= 0) && (x + dx < chessboard.getLength()) && (y + dy < chessboard.getWidth()) && chessboard.getLattice(x + dx, y + dy, chessboard.getCopyBoard()) instanceof CellBlock3 && (dx != 0 || dy != 0);
     }
 
     //计算周围存活的细胞数
