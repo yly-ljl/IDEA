@@ -108,7 +108,7 @@ public class DanDelifeon3 {
 
     private boolean isCellBlock3(int x, int y, int dx, int dy) {
         //检查该格是否是CellBlock,以及检查是否越界
-        //此处判定同时给lifeGameCheck方法和private方法调用，故条件较多。
+        //此处判定同时给lifeGameCheck方法和private方法调用，没有根据具体情况做拆分，故条件较多。
         if ((x + dx < 0) || (y + dy < 0) || (x + dx >= chessboard.getLength()) || (y + dy >= chessboard.getWidth()) || !(chessboard.getLattice(x + dx,y + dy, chessboard.getCopyBoard()) instanceof CellBlock3) || (dx == 0 && dy == 0)) {
             return false;
         }
