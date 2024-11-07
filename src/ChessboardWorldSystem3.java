@@ -154,7 +154,7 @@ public class ChessboardWorldSystem3 {
                 danDelifeon.lifeGameCheck3(danDelifeon.getDan_x(), danDelifeon.getDan_y());
             }
             this.second++;
-
+            copy();
             int label = 0;
             for (int i = 0; i < DanDelifeons.size(); i++, label++) {
                 DanDelifeon3 danDelifeon = DanDelifeons.get(i);
