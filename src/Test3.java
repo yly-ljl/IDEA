@@ -39,8 +39,8 @@ public class Test3 {
         }
 
         System.out.println("请输入要进行的游戏次数:");
-        int GamesNums = sc.nextInt();
+        int gamesNums = sc.nextInt();
 
-        chessboardWorldSystem.stepOneSecond(GamesNums);
+        chessboardWorldSystem.stepOneSecond(gamesNums);
     }
 }

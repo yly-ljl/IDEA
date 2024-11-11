@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 public class ChessboardWorldSystem3 {
     private final Object[][] board;
-    private Object[][] CopyBoard;
+    private Object[][] copyBoard;
     private final int length;
     private final int width;
     private int second;
@@ -13,7 +13,7 @@ public class ChessboardWorldSystem3 {
         this.width = width;
         board = new Object[this.length][this.width];
         //设置一个复制棋盘，帮助达到每次判定所有启命英同时进行的效果
-        CopyBoard = new Object[this.length][this.width];
+        copyBoard = new Object[this.length][this.width];
         this.second = 0;
         DanDelifeons = new ArrayList<>();
     }
@@ -68,11 +68,11 @@ public class ChessboardWorldSystem3 {
     }
 
     public Object[][] getCopyBoard() {
-        return CopyBoard;
+        return copyBoard;
     }
 
     public void setCopyBoard(Object[][] copyBoard) {
-        CopyBoard = copyBoard;
+        this.copyBoard = copyBoard;
     }
 
     //判断两个启命英的工作范围是否存在重叠
@@ -120,19 +120,19 @@ public class ChessboardWorldSystem3 {
         return flag;
     }
 
-    public void stepOneSecond(int NumOfGames) {
+    public void stepOneSecond(int numOfGames) {
         //随机放置细胞方块
         randomSetCellBlock();
 
         //记录游戏进行的次数
-        int GameNums = 0;
+        int gameNums = 0;
         //记录每局游戏进行的判定轮数,对第一次判定的特殊情况做处理
         int cnt_label = 1;
-        int SumOfMana = 0;
-        while (GameNums <= NumOfGames) {
+        int sumOfMana = 0;
+        while (gameNums <= numOfGames) {
             copy();
             int cnt = cnt_label;
-            boolean IsGameOver = false;
+            boolean isGameOver = false;
             //将DanDelifeon集合中的所有元素循环进行判定
             for (DanDelifeon3 danDelifeon : DanDelifeons) {
                 danDelifeon.lifeGameCheck1(danDelifeon.getDan_x(), danDelifeon.getDan_y());
@@ -157,17 +157,17 @@ public class ChessboardWorldSystem3 {
 
                 //一旦IsGameOver变为true,那么它就不再改变
                 //直到label == DanDelifeons.size()-1,即对最后一个启命英进行判定后，再将游戏范围内所有细胞变为死亡细胞
-                if (!IsGameOver){
-                    IsGameOver = flag;
+                if (!isGameOver){
+                    isGameOver = flag;
                 }
             }
             this.second++;
 
-            if (IsGameOver){
+            if (isGameOver){
                 this.second++;
                 //如果一局游戏结束了，将cnt_label变为1来记录下一局游戏判定的轮数
                 cnt_label = 1;
-                GameNums++;
+                gameNums++;
 
                 randomSetCellBlock();
             }else {
@@ -177,23 +177,23 @@ public class ChessboardWorldSystem3 {
 
         }
         for (DanDelifeon3 danDelifeon : DanDelifeons) {
-            SumOfMana += danDelifeon.getAccumulatedMana();
+            sumOfMana += danDelifeon.getAccumulatedMana();
         }
-        System.out.println("总产魔量:" + SumOfMana);
+        System.out.println("总产魔量:" + sumOfMana);
         System.out.println("总用时:" + this.second);
     }
 
     //将原棋盘复制给复制棋盘
     private void copy(){
         for (int i = 0; i < this.length; i++) {
-            if (this.width >= 0) System.arraycopy(this.board[i], 0, this.CopyBoard[i], 0, this.width);
+            if (this.width >= 0) System.arraycopy(this.board[i], 0, this.copyBoard[i], 0, this.width);
         }
     }
 
     //将复制棋盘中的某一格与原棋盘中对应的格子交换
     public void changeOneCellBlock(int x, int y){
-        Object obj = this.CopyBoard[x][y];
-        this.CopyBoard[x][y] = this.board[x][y];
+        Object obj = this.copyBoard[x][y];
+        this.copyBoard[x][y] = this.board[x][y];
         this.board[x][y] = obj;
     }
 

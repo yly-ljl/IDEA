@@ -15,7 +15,7 @@ public class CellBlock3 {
         this.age = age;
     }
 
-    public void AgeIncrease(){
+    public void ageIncrease(){
         this.age++;
     }
 }

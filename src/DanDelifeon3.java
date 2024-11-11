@@ -48,7 +48,7 @@ public class DanDelifeon3 {
                 if (flag) {
                     int count = countAliveNeighbors(Dan_x + dx,Dan_y + dy);
                     if (2 <= count && count <= 3){
-                        chessboard.getCellBlock(Dan_x + dx,Dan_y + dy, chessboard.getCopyBoard()).AgeIncrease();
+                        chessboard.getCellBlock(Dan_x + dx,Dan_y + dy, chessboard.getCopyBoard()).ageIncrease();
                         //每次对复制棋盘上的细胞进行操作后，将复制棋盘上的这个细胞与原棋盘上的交换，复制棋盘上的该细胞保持未处理时的状态
                         chessboard.changeOneCellBlock(Dan_x + dx,Dan_y + dy);
                         //复制棋盘上的下一个细胞进行操作时，不会受先前细胞处理的影响，达到同时处理的效果。
@@ -81,7 +81,7 @@ public class DanDelifeon3 {
 
     //引入变量cnt来记录该局游戏中所经过的判定轮数
     public boolean lifeGameCheck4(int Dan_x, int Dan_y, int cnt, int label) {
-        boolean IsGameOver = false;
+        boolean isGameOver = false;
         if (countAliveNeighbors(Dan_x, Dan_y) > 0){
             this.accumulatedMana += computeAccumulatedMana();
             for (int dx = -1; dx <= 1; dx++) {
@@ -95,7 +95,7 @@ public class DanDelifeon3 {
             }
             //除非已经判定过至少一轮，否则该局游戏不会结束
             if (cnt > 1){
-                IsGameOver = true;
+                isGameOver = true;
                 this.accumulatedMana += computeAccumulatedMana();
                 //label用来判定启命英集合中的所有启命英是否都经过了该判定。防止先判定的启命英造成了replaceAllCells而使之后启命英的判定无效
                 if (label == chessboard.getDanDelifeonsSize() - 1){
@@ -103,7 +103,7 @@ public class DanDelifeon3 {
                 }
             }
         }
-        return IsGameOver;
+        return isGameOver;
     }
 
     private boolean isCellBlock3(int x, int y, int dx, int dy) {
